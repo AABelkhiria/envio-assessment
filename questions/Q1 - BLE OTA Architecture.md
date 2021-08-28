@@ -1,9 +1,15 @@
 # BLE OTA Architecture
 
-*ADD CONTENTS HERE*
+### Contents
+---
+
+- [Questions](#questions)
+- [Main Concerns and How to Address Them in a Reliable OTA Update](#main-concerns-and-how-to-address-them-in-a-reliable-ota-update)
+- [BLE OTA Update - Suggested Method Flow Chart](#ble-ota-update---suggested-method-flow-chart)
 
 ### Questions
 ---
+
 You have an electronic IoT device, which uses `Bluetooth SoC` as a microcontroller. The device should support `OTA (Over The Air)` firmware updates via `BLE` communication. Your goal is to design a **reliable** OTA update architecture for the device and write a detailed, step-by-step description for the end to end process (block diagrams are welcome, no coding needed). 
 
 ```
