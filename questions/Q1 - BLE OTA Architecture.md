@@ -31,7 +31,7 @@ You have an electronic IoT device, which uses `Bluetooth SoC` as a microcontroll
 &nbsp;
 3. `OTA Triggering Method` must be accessible even if the firmware is invalid. Imagine you have a perfect OTA Bootloader solution but the method you are using to trigger an ota update and running the bootloader is a BLE GATT Characteristic Write. A smartphone should write to this characteristic in order to trigger a firmware update but due to a problem on your firmware, it is not advertising anymore. Here are the steps to prevent that:
     1. The firmware download operations should be done inside the Bootloader or as an external loader firmware. You can not rely on your active firmware to download the new firmware and then jump to the bootloader. The firmware download and installations should be done inside the Bootloader firmware. This way, even if your firmware is broken, the bootloader can download a new one. But there is still one risk here. What if the firmware is not completely broken, it just works but you just can't trigger it to jump to the bootloader? In this case, you will lose the firmware update feauture forever. What are the options to solve this problem?
-		1. Put an interaction method to pyhsically triggering a firmware update or recovery. This is the easiest and safest way but it might not be possible in every case. The work-arounds are listed below.
+		1. Put an interaction method to pyhsically (e.g. button or needle switch) triggering a firmware update or recovery. This is the easiest and safest way but it might not be possible in every case. The work-arounds are listed below.
 	    2. A periodic reset by a hardware watchdog and an insanity check of the firmware in the bootloader before running the active firmware. The active firmware can set a flag in the memory (volatile or non-volatile) during normal operation to let the bootloader know that everything is okay about the triggering method(e.g. *I am able to advertise and a smartphone is able to discover my triggering GATT characteristic*). After every hard-reset (let's say every night), the bootloader can check and reset this flag and start advertising with the **OTA Bootloader Mode** if there is a problem. 
 \
 &nbsp;
@@ -41,12 +41,17 @@ You have an electronic IoT device, which uses `Bluetooth SoC` as a microcontroll
     - The `Encryption` and the `Authentication` keys must be inside the one-time-programmable area and accessible **only** by the Bootloader firmware.
 \
 &nbsp;
-5. (Optional) Roll-Over mechanism can be implemented to prevent duplicate installation. A **force** flag can be added during the binary preparation to make the bootloader install the binary even if the new firmware version is equal or behind the current firmware version.
-6. (Optional) Data Transfer mechanism can be encrypted by BLE Pairing/Bonding method. The data chunks transferred over the air by BLE can be encrypted thanks the BLE's security mechanisms that is achieved by `Pairing/Bonding`. Without having this feauture, the firmware security was already ensured by encrypting the binary file but for further increasing the security level of the OTA procedure, BLE Pairing/Bonding methods can be used. The Encryption/Authentication permissions of the GATT characteristics that are used for BLE file transfer can be set and any operation done over these characteristics will require the smartphone to have Pairing/Bonding for the embedded device. This mechanism adds protection for `Man-In-The-Middle Attack` on the BLE radio packets.
+5. (Optional) `Roll-Over Mechanism` can be implemented to prevent duplicate installation. A **forced** flag can be added during the binary preparation to make the bootloader install the binary even if the new firmware version is equal or behind the current firmware version.
+6. (Optional) `Data Transfer Mechanism` can be encrypted by BLE `Pairing/Bonding` method. The data chunks transferred over the air by BLE can be encrypted thanks the BLE's security mechanisms that is achieved by `Pairing/Bonding`. Without having this feauture, the firmware security was already ensured by encrypting the binary file but for further increasing the security level of the OTA procedure, BLE Pairing/Bonding methods can be used. The Encryption/Authentication permissions of the GATT characteristics that are used for BLE file transfer can be set and any operation done over these characteristics will require the smartphone to have Pairing/Bonding for the embedded device. This mechanism adds protection for `Man-In-The-Middle Attack` on the BLE radio packets.
 \
 &nbsp;
-7. (Optional) File transfer data-rate can be enhanced by increasing the MTU Length. It is possible to set the MTU size up to 512 bytes (depends on the smartphone, default: 23 bytes) by sending a GATT MTU Exchange Request from the smartphone. It is automatically done by the operation system on IOS devices but requires additional process in Android devices.
+7. (Optional) File transfer data-rate can be enhanced by increasing the `MTU Length`. It is possible to set the MTU size up to 512 bytes (depends on the smartphone, default: 23 bytes) by sending a GATT MTU Exchange Request from the smartphone. It is automatically done by the operation system on IOS devices but requires additional process in Android devices.
 
+#### BLE OTA Update - Suggested Method Flow Chart
+
+Below is the flow chart of an example BLE OTA procedure, the memory layout is also given next to the chart.
+
+![image info](.metadata/BLE-OTA-FlowChart.png)
 
 
 
