@@ -4,6 +4,7 @@
 ---
 
 - [Questions](#questions)
+- [Answers](#answers)
 - [Main Concerns and How to Address Them in a Reliable OTA Update](#main-concerns-and-how-to-address-them-in-a-reliable-OTA-update)
 - [BLE OTA Update - Suggested Method Flow Chart](#ble-OTA-update---suggested-method-flow-chart)
 
